@@ -31,11 +31,11 @@ program_installations = [   ["7ZIP" , "C:\\Program Files\\7-Zip\\7z.exe"],
 Compilers = [
                 ["AVR",
                  "https://ww1.microchip.com/downloads/aemDocuments/documents/DEV/ProductDocuments/SoftwareTools/avr8-gnu-toolchain-3.7.0.1796-win32.any.x86_64.zip",
-                 "https://gitlab.techniek.hva.nl/prmic_int-public/prmic_opdrachten.git",
+                 "https://github.com/HvA-Elektrotechniek/prmic_int.git",
                 ],
                 ["GCC",
                  "http://ftp.vim.org/languages/qt/development_releases/prebuilt/mingw_32/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z",
-                 "https://gitlab.techniek.hva.nl/prmic_int-public/gcc-voorbeelden-hva.git",
+                 "https://github.com/HvA-Elektrotechniek/gcc-voorbeelden-hva.git",
                 ]
 ]
 
@@ -434,11 +434,16 @@ for compiler in Compilers:
 
     # get the corresponding git repository
     repoName = compiler[2][compiler[2].rfind("/") + 1:compiler[2].rfind(".")]
+
+    print(GitProgram)
+    print (compiler[2])
+    print("reponame :" + repoName)
+
     if os.path.exists(repoName):
         logger.info("Skipping git clone. Repository " + repoName + " exists and/or is not empty.")
     else:
         logger.info("Start cloning repository " + repoName)
-        process = subprocess.run([GitProgram, "clone", compiler[2], repoName],
+        process = subprocess.run([GitProgram, "clone", compiler[2]],
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         data = str(process.stdout)
         logger.info(data[2:-3])
