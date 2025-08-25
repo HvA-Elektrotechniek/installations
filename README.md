@@ -20,7 +20,7 @@ If you have no idea what the below means... skip it
 
 1. you need to have installed **python**
 2. if not done yet, install pyinstaller : **pip install pyinstaller**
-3. in the folder containing the python file to be converted using a CMD box type: **pyinstaller -F --uac-admin pyton file name.py**
+3. in the folder containing the python file to be converted using a CMD box type: **pyinstaller -F --uac-admin pyton_file_name.py**
 4. Your executable will be in a created **dist** sub-folder
 
 # Atmel drivers missing
