@@ -2,9 +2,15 @@
 # program           : InstallSoftware.py
 # purpose           : Install student development environment for PRMIC and Interfacing on Windows
 # author            : Nico Verduin 2020-2021
-# latest change     : Migrate to Github environment from HvA Gitlab
-# date              : 17-7-2024
-# author            : Nico Verduin
+# date              : 17-5-2021
+# author            : Hagen Patzke 2022
+# date              : 01-11-2022
+# author            : Nico Verduin 2023
+# date              : 28-5-2023
+# latest change     : Rewrite/build for HvA Development environment
+#
+# GitLab LINK       :
+# DOCUMENTATIE      :
 #
 import os.path          # Pathnames in Windows
 import subprocess       # Call sub processes
@@ -34,10 +40,10 @@ Compilers = [
                  "https://github.com/HvA-Elektrotechniek/prmic_int.git",
                 ],
                 ["GCC",
-                 "http://ftp.vim.org/languages/qt/development_releases/prebuilt/mingw_32/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z",
+                 "https://qt-mirror.dannhauer.de/development_releases/prebuilt/mingw_32/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z",
                  "https://github.com/HvA-Elektrotechniek/gcc-voorbeelden-hva.git",
                 ]
-]
+    ]
 
 # additional software libraries we need to install separately
 ExtraLibraries =  [
@@ -434,16 +440,11 @@ for compiler in Compilers:
 
     # get the corresponding git repository
     repoName = compiler[2][compiler[2].rfind("/") + 1:compiler[2].rfind(".")]
-
-    print(GitProgram)
-    print (compiler[2])
-    print("reponame :" + repoName)
-
     if os.path.exists(repoName):
         logger.info("Skipping git clone. Repository " + repoName + " exists and/or is not empty.")
     else:
         logger.info("Start cloning repository " + repoName)
-        process = subprocess.run([GitProgram, "clone", compiler[2]],
+        process = subprocess.run([GitProgram, "clone", compiler[2], repoName],
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         data = str(process.stdout)
         logger.info(data[2:-3])
@@ -465,7 +466,8 @@ for compiler in Compilers:
     # for each line in the input file
     for line in fileIn:
         # read replace the string and write to output file
-        line = line.replace('MYWINDOWSPATH',  compiler_path)
+        # Do not change the Windows path anymore since we are picking
+    #    line = line.replace('MYWINDOWSPATH',  compiler_path)
         line = line.replace('MYAVRDUDEPATH',  CWD+avrdude_path)
         fileOut.write(line)
     # close input and output files
